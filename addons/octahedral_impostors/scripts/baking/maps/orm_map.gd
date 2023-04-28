@@ -1,4 +1,4 @@
-tool
+@tool
 
 # extends OctahedralImpostorMapBaker
 extends "../map_baker.gd"
@@ -33,7 +33,7 @@ func _cleanup_baking_material(material: Material) -> void:
 	material.set_shader_param("use_metallic_texture", false)
 
 
-func _mimic_original_spatial_material(original_mat: SpatialMaterial, material: Material) -> void:
+func _mimic_original_spatial_material(original_mat: StandardMaterial3D, material: Material) -> void:
 	material.set_shader_param("roughness", original_mat.roughness)
 	print("ORG ROUGNH", original_mat.roughness)
 	if original_mat.roughness_texture != null:
@@ -89,7 +89,7 @@ func _mimic_original_shader_material(original_mat: ShaderMaterial, material: Mat
 func map_bake(org_material: Material) -> Material:
 	_cleanup_baking_material(normal_material)
 	var mat_baking = normal_material.duplicate()
-	if org_material is SpatialMaterial:
+	if org_material is StandardMaterial3D:
 		_mimic_original_spatial_material(org_material, mat_baking)
 	elif org_material is ShaderMaterial:
 		_mimic_original_shader_material(org_material, mat_baking)

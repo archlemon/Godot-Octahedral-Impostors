@@ -4,8 +4,8 @@
 [ext_resource path="res://addons/octahedral_impostors/scripts/baking/maps/albedo_map.gd" type="Script" id=2]
 [ext_resource path="res://addons/octahedral_impostors/scripts/baking/maps/normalmap_map.gd" type="Script" id=3]
 [ext_resource path="res://addons/octahedral_impostors/scripts/profile_resource.gd" type="Script" id=4]
-[ext_resource path="res://addons/octahedral_impostors/materials/shaders/ImpostorShader.shader" type="Shader" id=5]
-[ext_resource path="res://addons/octahedral_impostors/materials/shaders/ImpostorShaderShadows.shader" type="Shader" id=6]
+[ext_resource path="res://addons/octahedral_impostors/materials/shaders/ImpostorShader.gdshader" type="Shader" id=5]
+[ext_resource path="res://addons/octahedral_impostors/materials/shaders/ImpostorShaderShadows.gdshader" type="Shader" id=6]
 [ext_resource path="res://addons/octahedral_impostors/scripts/baking/maps/orm_map.gd" type="Script" id=7]
 
 [resource]

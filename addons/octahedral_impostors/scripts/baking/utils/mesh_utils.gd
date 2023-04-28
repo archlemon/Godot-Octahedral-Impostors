@@ -1,6 +1,6 @@
-tool
+@tool
 
-static func _create_node_mat_cache(node: Spatial, materials_cache: Dictionary) -> void:
+static func _create_node_mat_cache(node: Node3D, materials_cache: Dictionary) -> void:
 	var np := String(node.get_path())
 	if node.mesh == null:
 		print("MeshInstance without mesh: ", np)
@@ -19,14 +19,14 @@ static func _create_node_mat_cache(node: Spatial, materials_cache: Dictionary) -
 	materials_cache[node.get_instance()] = arr
 
 
-static func create_materials_cache(node: Spatial, materials_cache: Dictionary) -> void:
-	if node is MeshInstance:
+static func create_materials_cache(node: Node3D, materials_cache: Dictionary) -> void:
+	if node is MeshInstance3D:
 		_create_node_mat_cache(node, materials_cache)
 	for child in node.get_children():
 		create_materials_cache(child, materials_cache)
 
 
-static func get_material_cached(node: Spatial, surface: int, materials_cache: Dictionary):
+static func get_material_cached(node: Node3D, surface: int, materials_cache: Dictionary):
 	var np := String(node.get_path())
 	var r_id: RID = node.get_instance()
 	if not materials_cache.has(r_id):

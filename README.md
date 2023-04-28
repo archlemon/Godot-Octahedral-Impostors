@@ -1,7 +1,7 @@
 
 # Godot Octahedral Impostors
 
-Simple implementation of octahedral impostors in Godot. Inspired by [shaderbits article](https://www.shaderbits.com/blog/octahedral-impostors) and this [Unity implementation](https://github.com/xraxra/IMP).
+Simple implementation of octahedral impostors in Godot. Inspired by [shaderbits article](https://www.gdshaderbits.com/blog/octahedral-impostors) and this [Unity implementation](https://github.com/xraxra/IMP).
 This implementation uses only one plane to imitate a three-dimensional object from multiple angles.
 
 # Installation

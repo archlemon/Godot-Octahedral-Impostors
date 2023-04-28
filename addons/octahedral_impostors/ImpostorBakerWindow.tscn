@@ -19,7 +19,7 @@ environment = SubResource( 2 )
 [sub_resource type="QuadMesh" id=4]
 size = Vector2( 2, 2 )
 
-[node name="ImpostorBaker" type="WindowDialog"]
+[node name="ImpostorBaker" type="Window"]
 visible = true
 anchor_left = 0.5
 anchor_top = 0.5
@@ -285,7 +285,7 @@ script = ExtResource( 5 )
 
 [node name="DilatatePipeline" parent="BakerScript" instance=ExtResource( 1 )]
 
-[connection signal="popup_hide" from="." to="." method="_on_ImpostorBaker_popup_hide"]
+[connection signal="close_requested" from="." to="." method="_on_ImpostorBaker_popup_hide"]
 [connection signal="pressed" from="MainContainer/Panel/container/Generate" to="." method="_on_Generate_pressed"]
 [connection signal="value_changed" from="MainContainer/Panel/container/HBoxContainer/SpinBoxCoverage" to="." method="_on_SpinBox_value_changed"]
 [connection signal="value_changed" from="MainContainer/Panel/container/HBoxContainer3/SpinBoxGridSize" to="." method="_on_SpinBoxGridSize_value_changed"]

@@ -1,16 +1,16 @@
 shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
-uniform vec4 albedo : hint_color = vec4(1, 1, 1, 1);
+uniform vec4 albedo : source_color = vec4(1, 1, 1, 1);
 uniform float specular = 0.5f;
-uniform float metallic = 1f;
-uniform float roughness : hint_range(0, 1) = 1f;
+uniform float metallic = 1.0f;
+uniform float roughness : hint_range(0, 1) = 1.0f;
 
-uniform sampler2D imposterTextureAlbedo : hint_albedo;
+uniform sampler2D imposterTextureAlbedo : source_color;
 uniform sampler2D imposterTextureNormal : hint_normal;
-uniform sampler2D imposterTextureDepth : hint_white;
-uniform sampler2D imposterTextureOrm : hint_white;
-uniform vec2 imposterFrames = vec2(16f, 16f);
-uniform vec3 positionOffset = vec3(0f);
+uniform sampler2D imposterTextureDepth : hint_default_white;
+uniform sampler2D imposterTextureOrm : hint_default_white;
+uniform vec2 imposterFrames = vec2(16.0f, 16.0f);
+uniform vec3 positionOffset = vec3(0.0f);
 uniform bool isFullSphere = true;
 uniform float alpha_clamp = 0.5f;
 uniform bool dither = false;
@@ -41,7 +41,7 @@ vec2 VecToSphereOct(vec3 pivotToCamera)
 	float sum = dot(pivotToCamera, octant);
 	vec3 octahedron = pivotToCamera / sum;
 
-	if (octahedron.y < 0f)
+	if (octahedron.y < 0.0f)
 	{
 		vec3 absolute = abs(octahedron);
 		octahedron.xz = octant.xz * vec2(1.0f - absolute.z, 1.0f - absolute.x);
@@ -80,11 +80,11 @@ vec2 VectorToGrid(vec3 vec)
 vec3 OctaSphereEnc(vec2 coord)
 {
 	coord = (coord - 0.5) * 2.0;
-	vec3 position = vec3(coord.x, 0f, coord.y);
+	vec3 position = vec3(coord.x, 0.0f, coord.y);
 	vec2 absolute = abs(position.xz);
-	position.y = 1f - absolute.x - absolute.y;
+	position.y = 1.0f - absolute.x - absolute.y;
 
-	if (position.y < 0f)
+	if (position.y < 0.0f)
 	{
 		position.xz = sign(position.xz) * vec2(1.0f - absolute.y, 1.0f - absolute.x);
 	}
@@ -98,9 +98,9 @@ vec3 OctaHemiSphereEnc(vec2 coord)
 	//coord = (0, 0.27)
 	//pos = -0.27, 0, -0.63
 	
-	vec3 position = vec3(coord.x - coord.y, 0f, -1.0 + coord.x + coord.y);
+	vec3 position = vec3(coord.x - coord.y, 0.0f, -1.0 + coord.x + coord.y);
 	vec2 absolute = abs(position.xz);
-	position.y = 1f - absolute.x - absolute.y;
+	position.y = 1.0f - absolute.x - absolute.y;
 	return position;
 }
 
@@ -160,7 +160,7 @@ vec4 quadBlendWieghts(vec2 coords)
 	/* 0 0 0
 	0 0 0
 	1 0 0 */
-	res.x = min(1f - coords.x, 1f - coords.y);
+	res.x = min(1.0f - coords.x, 1.0f - coords.y);
 	/* 1 0 0
 	0 0 0
 	0 0 1 */
@@ -246,8 +246,8 @@ vec3 projectOnPlaneBasis(vec3 ray, vec3 plane_normal, vec3 plane_x, vec3 plane_y
 void vertex()
 {
 	vec2 framesMinusOne = imposterFrames - vec2(1);
-	vec3 cameraPos_WS = (CAMERA_MATRIX * vec4(vec3(0), 1.0)).xyz;
-	vec3 cameraPos_OS = (inverse(WORLD_MATRIX) * vec4(cameraPos_WS, 1.0)).xyz;
+	vec3 cameraPos_WS = (INV_VIEW_MATRIX * vec4(vec3(0), 1.0)).xyz;
+	vec3 cameraPos_OS = (inverse(MODEL_MATRIX) * vec4(cameraPos_WS, 1.0)).xyz;
 
 	//TODO: check if this is correct. We are using orho projected images, so
 	// camera far away
@@ -359,7 +359,7 @@ vec2 recalculateUV(vec2 uv_f,  vec2 frame, vec2 xy_f, vec2 frame_size, float d_s
 
 void fragment()
 {
-	vec2 quad_size = vec2(1f) / imposterFrames;
+	vec2 quad_size = vec2(1.0f) / imposterFrames;
 	vec2 uv_f1 = recalculateUV(uv_frame1, frame1, xy_frame1, quad_size, depth_scale, imposterTextureDepth);
 	vec2 uv_f2 = recalculateUV(uv_frame2, frame2, xy_frame2, quad_size, depth_scale, imposterTextureDepth);
 	vec2 uv_f3 = recalculateUV(uv_frame3, frame3, xy_frame3, quad_size, depth_scale, imposterTextureDepth);
@@ -406,7 +406,7 @@ void fragment()
 	}
 	else {
 		ALPHA = float(baseTex.a>alpha_clamp);
-		ALPHA_SCISSOR = 0.5;
+		ALPHA_SCISSOR_THRESHOLD = 0.5;
 	}
 	METALLIC = ormTex.b * metallic;
 	SPECULAR = specular;
